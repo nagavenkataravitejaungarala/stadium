@@ -58,6 +58,27 @@ def main():
 
     elif choice == "View Availability":
         stadium.view_availability()
+def view_availability(self):
+    available_seats = []
+    booked_seats = []
+
+    for seat in self.stadium_list:
+        if seat['status'] == 'Available':
+            available_seats.append(seat['seat_number'])
+        elif seat['status'] == 'Booked':
+            booked_seats.append(seat['seat_number'])
+
+    st.write("Current seat availability:")
+    st.write(f"Available seats: {available_seats}")
+    st.write(f"Booked seats: {booked_seats}")
+
+    st.write("\nOrder data:")
+    if self.order_data:
+        for order in self.order_data:
+            st.write(f"Seat {order['seat_number']} is booked.")
+    else:
+        st.write("No seat has been booked yet.")
+
 
 if __name__ == '__main__':
     main()
