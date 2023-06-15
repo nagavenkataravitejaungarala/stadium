@@ -1,7 +1,9 @@
 import streamlit as st
 
 class CricketStadium:
-    def __init__(self, capacity):
+    def __init__(self, name, location, capacity):
+        self.name = name
+        self.location = location
         self.capacity = capacity
         self.stadium_list = [{'seat_number': i+1, 'status': 'Available'} for i in range(capacity)]
         self.order_data = []
@@ -12,6 +14,13 @@ class CricketStadium:
             seat['status'] = 'Booked'
             self.order_data.append(seat)
             st.success(f"Seat {seat_number} booked successfully!")
+
+            # Display order receipt
+            st.write("\nOrder Receipt:")
+            st.write(f"Stadium Name: {self.name}")
+            st.write(f"Location: {self.location}")
+            st.write(f"Seat Number: {seat['seat_number']}")
+
         else:
             st.warning(f"Seat {seat_number} is already booked.")
 
@@ -23,6 +32,11 @@ class CricketStadium:
             st.success(f"Seat {seat_number} cancelled successfully!")
         else:
             st.warning(f"Seat {seat_number} is not booked.")
+
+    def view_stadium_details(self):
+        st.write(f"Stadium Name: {self.name}")
+        st.write(f"Location: {self.location}")
+        st.write(f"Capacity: {self.capacity}")
 
     def view_availability(self):
         available_seats = []
@@ -46,16 +60,19 @@ class CricketStadium:
             st.write("No seat has been booked yet.")
 
 # Creating an instance of the CricketStadium
-stadium = CricketStadium(capacity=50)
+stadium = CricketStadium(name="ABC Stadium", location="City XYZ", capacity=50)
 
 # Streamlit app
 def main():
     st.title("Online Cricket Stadium Booking")
 
-    menu = ["Book Seat", "Cancel Seat", "View Availability"]
+    menu = ["Stadium Details", "Book Seat", "Cancel Seat", "View Availability"]
     choice = st.sidebar.selectbox("Menu", menu)
 
-    if choice == "Book Seat":
+    if choice == "Stadium Details":
+        stadium.view_stadium_details()
+
+    elif choice == "Book Seat":
         seat_number = st.number_input("Enter seat number", min_value=1, max_value=stadium.capacity, step=1)
         if st.button("Book"):
             stadium.book_seat(seat_number)
